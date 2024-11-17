@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Para usar a porta que o Vercel fornece
 
 // Middleware para parsear o corpo das requisições como URL encoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,6 +11,7 @@ let empresas = [];
 
 // Rota para exibir o formulário de cadastro
 app.get('/', (req, res) => {
+  res.setHeader('Content-Type', 'text/html'); // Força a renderização do HTML
   res.send(`
     <h1>Cadastro de Empresas</h1>
     <form action="/cadastro" method="POST">
@@ -47,6 +48,7 @@ app.post('/cadastro', (req, res) => {
 
   // Validação dos campos
   if (!cnpj || !razao_social || !nome || !endereco || !cidade || !uf || !cep || !email || !telefone) {
+    res.setHeader('Content-Type', 'text/html');
     return res.send(`
       <h1>Cadastro de Empresas</h1>
       <p style="color: red;">Todos os campos são obrigatórios!</p>
